@@ -28,9 +28,9 @@
 
 bayDem_sampleGaussMix <- function(N,th) {
     # Use distr to sample from a two-component, truncated Gaussian mixture
-    normMix <- UnivarMixingDistribution(Norm(mean=th[3],sd=th[4]),Norm(mean=th[5],sd=th[6]),mixCoeff=th[1:2])
-    normMixTrunc <- Truncate(normMix,th[7],th[8])
-    samp <- r(normMixTrunc)(N)
+    normMix <- distr::UnivarMixingDistribution(Norm(mean=th[3],sd=th[4]),Norm(mean=th[5],sd=th[6]),mixCoeff=th[1:2])
+    normMixTrunc <- distr::Truncate(normMix,th[7],th[8])
+    samp <- distr::r(normMixTrunc)(N)
     return(samp)
 }
 
