@@ -1,7 +1,10 @@
 # Description
-#   Sample from a (truncated) two-component Gaussian mixture. This provides
-#   calendar dates of radiocarbon samples from the demographic model specified
-#   by the two-component Gaussian mixture.
+#   Calculate the observation matrix, which is the likelihood calculated of the
+#   radiocarbon measurements in sampRcMeas calculated at the calendar dates in
+#   the vector ygrid.
+#
+#   The total uncertainty of the measurement comes from measurement error
+#   (SIG_M, calculated using )
 #
 # Example calls(s)
 #
