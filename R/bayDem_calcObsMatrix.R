@@ -1,23 +1,30 @@
 # Description
-#   Calculate the observation matrix, which is the likelihood calculated of the
-#   radiocarbon measurements in sampRcMeas calculated at the calendar dates in
-#   the vector ygrid.
+#   Calculate the observation matrix, which is the likelihood of the radiocarbon
+#   measurements in sampRcMeas calculated at the calendar dates in the vector
+#   ygrid.
 #
 #   The total uncertainty of the measurement comes from measurement error
-#   (SIG_M, calculated using )
+#   (SIG_M, calculated using the measurement error for each measurement) and
+#   the calibration curve error (SIK_k, calculated using the uncertainty for
+#   the calibration curve at each grid point). These uncertainties (and the
+#   associated measurements) are already "projected" to 1950 equivalents (e.g.,
+#   in bayDem_dateSampToC14Samp).
 #
 # Example calls(s)
 #
-#   samp <- bayDem_sampleGaussMix(N,th)
+#   obsMat <- bayDem_calcObsMatrix(ygrid,sampRcMeas,calibDf)
 # 
 # Input(s)
-#   Name    Type      Description
-#   ygrid   vector    The locations at which to calculate the likelihood
-#                                        ymin to ymax]
+#   Name          Type      Description
+#   ygrid         vector    The locations at which to calculate the likelihood
+#   sampRcMeas    list      Radiocarbon samples (see bayDem_dateSampToC14samp)
+#   calibDf       dframe    Calibration curve (see bayDem_loadCalibCurve)
 #
 # Output(s)
-#   Name    Type           Description
-#   samp    vector         The samples (length = N)
+#   Name          Type      Description
+#   obsMat        matrix    [Nobs x Ngrid] The observation matrix -- that is,
+#                           the likelihood of this measurement calculated for
+#                           the calendar dates in ygrid.
 
 bayDem_calcObsMatrix <- function(ygrid,sampRcMeas,calibDf) {
 	# ygrid and TH_mc are in AD
@@ -43,4 +50,3 @@ bayDem_calcObsMatrix <- function(ygrid,sampRcMeas,calibDf) {
 
 	obsMat <- exp(-(PHI_m - MU_k)^2 / (SIG_sq) / 2) / SIG_sq / sqrt(2*pi)
 }
-
