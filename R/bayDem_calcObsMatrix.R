@@ -1,14 +1,18 @@
 # Description
 #   Calculate the observation matrix, which is the likelihood of the radiocarbon
 #   measurements in sampRcMeas calculated at the calendar dates in the vector
-#   ygrid.
+#   ygrid:
+#
+#  obsMat = [p(phi_m,1|y_1)  p(phi_m,1:y_2) ... ]
+#         = [p(phi_m,2|y_1)       ---       ... ]
+#         = [     ...             ---       ... ]
 #
 #   The total uncertainty of the measurement comes from measurement error
 #   (SIG_M, calculated using the measurement error for each measurement) and
 #   the calibration curve error (SIK_k, calculated using the uncertainty for
 #   the calibration curve at each grid point). These uncertainties (and the
-#   associated measurements) are already "projected" to 1950 equivalents (e.g.,
-#   in bayDem_dateSampToC14Samp).
+#   associated measurements) should already be "projected" to 1950 equivalents
+#   (e.g., in bayDem_dateSampToC14Samp).
 #
 # Example calls(s)
 #
