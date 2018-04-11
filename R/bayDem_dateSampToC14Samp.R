@@ -32,23 +32,24 @@ bayDem_dateSampToC14Samp <- function(y_e,calibDf,isAD=F,errorParam=c(15,25)) {
 
     N <- length(y_e)
 
-    # Interpolate calibDf to get the mean and standard deviation of the
-    # phi [projected to 1950, as is standard]
+    # Interpolate calibDf to get the mean the # phi [projected to 1950, as is
+    # standard]. The error is not incorporated into the sampling process, but
+    # it is incorporated into the measurement process in subsequent functions.
+    # This is the appropriate behavior since all the samples should be drawn
+    # from the same calibration curve, though in reality we don't know the
+    # actual curve with perfect accuracy.
     y_curve     <- rev(calibDf$yearBP)
     mu_k_curve  <- exp(-rev(calibDf$uncalYearBP)/8033)
-    sig_k_curve <- rev(calibDf$uncalYearBPError) * mu_k_curve / 8033
 
-    # Interpolate curves at y_e to yield mu_k and sig_k
+    # Interpolate curves at y_e to yield mu_k
     mu_k  <- approx(y_curve,mu_k_curve,y_e)
     mu_k  <- mu_k$y
-    sig_k <- approx(y_curve,sig_k_curve,y_e)
-    sig_k <- sig_k$y
 
     # Sample the measurement errors
     sig_m <- runif(N,errorParam[1],errorParam[2]) * mu_k / 8033
 
     # The measured "ratios"
-    phi_m <- rnorm(N,mu_k,sqrt(sig_m^2 + sig_k^2))
+    phi_m <- rnorm(N,mu_k,sig_m)
 
     # Calculate radiocarbon years (uncal) measurement and error
     sig_yrc_m <- 8033 * sig_m / phi_m
