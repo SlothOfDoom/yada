@@ -17,15 +17,13 @@
 #   f          vector    The probability density function 
 
 bayDem_calcWaveletPdf <- function(augData,dy=1) {
-    J0 <- dim(augData$S)[1]
-    G  <- dim(augData$S)[2]
-    m <- augData$m
+    J <- length(augData$S)
+    dwt <- augData$dwt
     # Iterate over S to place zeros in augData$m as appropriate
-    for(j in 1:J0) {
-        varName <- paste('d',toString(j),sep='')
-        m[[varName]] <- m[[varName]] * augData$S[j,]
+    for(j in 1:J) {
+        dwt$data[[j]] <- dwt$data[[j]] * augData$S[[j]]
     }
-    f_root <- imodwt(m)
+    f_root <- reconstruct(dwt)
     f <- f_root^2
     f <- f / sum(f) / dy
     return(f)
