@@ -1,11 +1,11 @@
 # Description
-#   Calculate the observation matrix, which is the likelihood of the radiocarbon
+#   Calculate the measurement matrix, which is the likelihood of the radiocarbon
 #   measurements in sampRcMeas calculated at the calendar dates in the vector
 #   ygrid:
 #
-#  obsMat = [p(phi_m,1|y_1)  p(phi_m,1:y_2) ... ]
-#         = [p(phi_m,2|y_1)       ---       ... ]
-#         = [     ...             ---       ... ]
+#  M = [p(phi_m,1|y_1)  p(phi_m,1:y_2) ... ]
+#    = [p(phi_m,2|y_1)       ---       ... ]
+#    = [     ...             ---       ... ]
 #
 #   The total uncertainty of the measurement comes from measurement error
 #   (SIG_M, calculated using the measurement error for each measurement) and
@@ -16,7 +16,7 @@
 #
 # Example calls(s)
 #
-#   obsMat <- bayDem_calcObsMatrix(ygrid,sampRcMeas,calibDf)
+#   M <- bayDem_calcMeasMatrix(ygrid,sampRcMeas,calibDf)
 # 
 # Input(s)
 #   Name          Type      Description
@@ -26,11 +26,11 @@
 #
 # Output(s)
 #   Name          Type      Description
-#   obsMat        matrix    [Nobs x Ngrid] The observation matrix -- that is,
+#   M             matrix    [Nmeas x Ngrid] The measurement matrix -- that is,
 #                           the likelihood of this measurement calculated for
 #                           the calendar dates in ygrid.
 
-bayDem_calcObsMatrix <- function(ygrid,sampRcMeas,calibDf) {
+bayDem_calcMeasMatrix <- function(ygrid,sampRcMeas,calibDf) {
 	# ygrid and TH_mc are in AD
 	ygrid_BP <- 1950 - ygrid
 	# sampRcMeas is radiocarbon measurements referenced to BP
@@ -52,5 +52,6 @@ bayDem_calcObsMatrix <- function(ygrid,sampRcMeas,calibDf) {
 
 	SIG_sq <- SIG_m^2 + SIG_k^2
 
-	obsMat <- exp(-(PHI_m - MU_k)^2 / (SIG_sq) / 2) / SIG_sq / sqrt(2*pi)
+	M <- exp(-(PHI_m - MU_k)^2 / (SIG_sq) / 2) / SIG_sq / sqrt(2*pi)
+	return(M)
 }
