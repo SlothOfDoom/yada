@@ -31,9 +31,10 @@
 #                           the calendar dates in ygrid.
 
 bayDem_calcMeasMatrix <- function(ygrid,sampRcMeas,calibDf) {
-	# ygrid and TH_mc are in AD
+	# ygrid is in AD
 	ygrid_BP <- 1950 - ygrid
-	# sampRcMeas is radiocarbon measurements referenced to BP
+
+	# calibration curve
 	y_curve     <- rev(calibDf$yearBP)
 	mu_k_curve  <- exp(-rev(calibDf$uncalYearBP)/8033)
 	sig_k_curve <- rev(calibDf$uncalYearBPError) * mu_k_curve / 8033
@@ -52,6 +53,6 @@ bayDem_calcMeasMatrix <- function(ygrid,sampRcMeas,calibDf) {
 
 	SIG_sq <- SIG_m^2 + SIG_k^2
 
-	M <- exp(-(PHI_m - MU_k)^2 / (SIG_sq) / 2) / SIG_sq / sqrt(2*pi)
+	M <- exp(-(PHI_m - MU_k)^2 / (SIG_sq) / 2) / sqrt(SIG_sq) / sqrt(2*pi)
 	return(M)
 }
